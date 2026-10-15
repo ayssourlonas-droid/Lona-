@@ -3,7 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>عيد ميلاد لونتي</title>
+<title>♥</title>
+<meta property="og:title" content="♥">
+<meta property="og:description" content=" ">
+<meta name="description" content=" ">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@400;500;700&display=swap">
@@ -159,6 +162,16 @@
   .fall { position: fixed; top: -30px; z-index: 19; pointer-events: none; font-size: var(--sz); color: var(--c); animation: fall var(--d) linear forwards; }
   @keyframes fall { to { transform: translateY(110vh) translateX(var(--sway)) rotate(var(--rot)); } }
 
+  /* Shown only inside Instagram / Facebook in-app browsers, which block the microphone */
+  .opener {
+    position: fixed; inset: auto 12px 12px 12px; z-index: 40; max-width: 520px; margin-inline: auto;
+    background: var(--surface); border: 1px solid var(--pink); border-radius: 16px; padding: 14px 16px;
+    display: flex; flex-direction: column; gap: 10px; align-items: center; text-align: center;
+    box-shadow: 0 10px 40px rgb(0 0 0 / .6);
+  }
+  .opener[hidden] { display: none !important; }
+  .opener p { font-size: 0.95rem; line-height: 1.6; }
+  .opener .btn { padding: 10px 24px; font-size: 1rem; }
   .balloon {
     position: fixed; bottom: -140px; z-index: 18; pointer-events: none;
     width: var(--w); height: calc(var(--w) * 1.25); background: var(--c);
@@ -246,6 +259,10 @@
     </div>
   </section>
 </main>
+<div class="opener" id="opener" hidden>
+  <p id="openerMsg"></p>
+  <button class="btn" id="openerBtn" type="button" hidden>افتحي في كروم</button>
+</div>
 <canvas id="fx" aria-hidden="true"></canvas>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -260,6 +277,31 @@
   var $ = function (id) { return document.getElementById(id); };
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var COLS = ["var(--red)", "var(--pink)", "var(--violet)"];
+
+  /* Instagram / Facebook in-app browser: send the person to Chrome (works on Android) */
+  (function () {
+    var ua = navigator.userAgent || "";
+    if (!/Instagram|FBAN|FBAV|FB_IAB/i.test(ua)) return;
+    var isAndroid = /Android/i.test(ua);
+    var url = location.href.split("#")[0];
+    var chromeUrl = "intent://" + location.host + location.pathname + location.search +
+      "#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" + encodeURIComponent(url) + ";end";
+    var box = $("opener"), msg = $("openerMsg"), btn = $("openerBtn");
+    box.hidden = false;
+    if (isAndroid) {
+      msg.textContent = "باش يخدم كل شيء مليح (الصوت والفيديو) افتحي الصفحة في كروم.";
+      btn.hidden = false;
+      btn.addEventListener("click", function () { location.href = chromeUrl; });
+      var tried = false;
+      try { tried = sessionStorage.getItem("openedChrome") === "1"; } catch (e) {}
+      if (!tried) {
+        try { sessionStorage.setItem("openedChrome", "1"); } catch (e) {}
+        setTimeout(function () { location.href = chromeUrl; }, 300);
+      }
+    } else {
+      msg.textContent = "باش يخدم كل شيء مليح اضغطي على ⋯ فوق ثم «فتح في المتصفح».";
+    }
+  })();
 
   function pad(n) { return String(n).padStart(2, "0"); }
 
