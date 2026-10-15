@@ -1,6 +1,9 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>عيد ميلاد لونتي</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@400;500;700&display=swap">
@@ -103,21 +106,11 @@
   }
   @keyframes rise { to { transform: translateY(-120vh) translateX(var(--sway)); } }
 
-  .cake { width: min(100%, 320px); height: auto; position: relative; z-index: 1; }
   .stage { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; position: relative; z-index: 1; }
   .cake3d { width: min(100%, 380px); aspect-ratio: 5 / 6; max-width: 100%; position: relative; z-index: 1; }
   .cake3d canvas { width: 100%; height: 100%; display: block; touch-action: pan-y; cursor: grab; }
   .cake3d canvas:active { cursor: grabbing; }
-  .cake[hidden] { display: none !important; }
   .hint { font-size: 0.85rem; color: var(--muted); }
-  .flame { transform-origin: 150px 70px; animation: flicker 1.1s ease-in-out infinite; transition: opacity .35s ease; }
-  @keyframes flicker { 0%,100% { transform: scale(1, 1) rotate(-2deg); } 50% { transform: scale(.92, 1.08) rotate(2deg); } }
-  .out .flame { opacity: 0; animation: none; }
-  .halo { transition: opacity .35s ease; }
-  .out .halo { opacity: 0; }
-  .smoke { opacity: 0; }
-  .out .smoke { animation: drift 2.2s ease-out forwards; }
-  @keyframes drift { from { transform: translateY(0); opacity: .7; } to { transform: translateY(-26px); opacity: 0; } }
 
   .ask { display: flex; flex-direction: column; gap: 16px; align-items: center; z-index: 1; }
   .wish { display: none; z-index: 1; width: 100%; }
@@ -153,12 +146,15 @@
   canvas#fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; }
 
   @media (prefers-reduced-motion: reduce) {
-    .heart, .flame, .out .smoke, .out .wish, .beat { animation: none; }
+    .heart, .out .wish, .beat { animation: none; }
     .btn { transition: none; }
   }
 </style>
 
-<main class="wrap">
+<style>html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}</style>
+</head>
+<body>
+<main class="wrap" dir="rtl" lang="ar">
   <section class="hero" id="hero">
     <p class="date">١٦ أكتوبر</p>
     <div class="door">
@@ -181,34 +177,15 @@
     <h2 class="glow-text">كل عام وإنتي بخير حبيبتي</h2>
 
     <div class="stage">
-    <div id="cake3d" class="cake3d" role="img" aria-label="كعكة عيد ميلاد ثلاثية الأبعاد بشمعة" hidden></div>
+    <div id="cake3d" class="cake3d" role="img" aria-label="كعكة عيد ميلاد ثلاثية الأبعاد عليها شمعتا الرقم 17" hidden></div>
     <p class="hint" id="hint" hidden>لفّي الكعكة بإصبعك</p>
-    <svg id="cake2d" class="cake" viewBox="0 0 300 300" role="img" aria-label="كعكة عيد ميلاد بشمعة">
-      <ellipse cx="150" cy="270" rx="130" ry="14" fill="var(--line)"/>
-      <rect x="40" y="200" width="220" height="64" rx="14" fill="var(--cake-b)"/>
-      <path d="M40 214 q18 22 36 0 t36 0 t36 0 t36 0 t36 0 t36 0 v-14 h-220z" fill="var(--cake-c)"/>
-      <rect x="70" y="146" width="160" height="58" rx="12" fill="var(--cake-a)"/>
-      <path d="M70 160 q16 20 32 0 t32 0 t32 0 t32 0 t32 0 v-14 h-160z" fill="var(--cake-c)"/>
-      <circle cx="96" cy="232" r="5" fill="var(--pink)"/><circle cx="150" cy="238" r="5" fill="var(--pink)"/><circle cx="204" cy="232" r="5" fill="var(--pink)"/>
-      <circle cx="106" cy="178" r="4" fill="var(--cake-c)"/><circle cx="150" cy="184" r="4" fill="var(--cake-c)"/><circle cx="194" cy="178" r="4" fill="var(--cake-c)"/>
-      <rect x="143" y="92" width="14" height="56" rx="4" fill="var(--violet)"/>
-      <rect x="143" y="108" width="14" height="6" fill="var(--cake-c)" opacity=".7"/>
-      <rect x="143" y="124" width="14" height="6" fill="var(--cake-c)" opacity=".7"/>
-      <rect x="149" y="84" width="2" height="10" fill="var(--muted)"/>
-      <circle class="halo" cx="150" cy="66" r="34" fill="var(--flame)" opacity=".16"/>
-      <g class="flame">
-        <path d="M150 46 C 138 62 138 78 150 84 C 162 78 162 62 150 46 Z" fill="var(--flame)"/>
-        <path d="M150 62 C 145 70 146 77 150 80 C 154 77 155 70 150 62 Z" fill="var(--red)" opacity=".8"/>
-      </g>
-      <g class="smoke" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round">
-        <path d="M150 80 q-8 -10 0 -18 q8 -8 0 -18"/>
-      </g>
-    </svg>
     </div>
 
     <div class="ask" id="ask">
-      <p>طفّي الشمعة وتمنّي أمنية في قلبك.</p>
-      <button class="btn" id="blow" type="button">طفّي الشمعة</button>
+      <p>انفخي على الشمعة وتمنّي أمنية في قلبك.</p>
+      <button class="btn" id="mic" type="button">انفخي على الشمعة</button>
+      <p class="hint" id="micMsg" hidden></p>
+      <button class="btn alt" id="blow" type="button">أو اضغطي لتطفئيها</button>
     </div>
 
     <div class="wish" id="wish">
@@ -339,7 +316,7 @@
 
   /* Three-tier cake in real 3D */
   var Cake3D = (function () {
-    var api = { ok: false, blow: function () {} };
+    var api = { ok: false, blow: function () {}, setBlow: function () {} };
     api.init = function (host) {
       var T = window.THREE;
       if (!T || api.ok) return api.ok;
@@ -388,111 +365,218 @@
       var ped = new T.Mesh(new T.CylinderGeometry(0.7, 1.1, 0.8, 48), mat(0x6a1c4e, 0.5, 0.2)); ped.position.y = -0.4; cake.add(ped);
       var base = new T.Mesh(new T.CylinderGeometry(1.7, 1.8, 0.14, 64), mat(0x6a1c4e, 0.5, 0.2)); base.position.y = -0.85; cake.add(base);
 
-      /* Writing around the tiers */
+      /* Textures */
       var age = String(CONFIG.age || "").trim();
-      var sideBig = tex(4096, 320, function (g, w, h) {
-        g.fillStyle = "#A50F3F"; g.fillRect(0, 0, w, h);
-        g.fillStyle = "rgba(255,255,255,.10)"; g.fillRect(0, h * 0.06, w, 5); g.fillRect(0, h * 0.94 - 5, w, 5);
+      function crumbs(g, w, h, n, cols) {
+        for (var i = 0; i < n; i++) {
+          g.fillStyle = cols[i % cols.length];
+          g.fillRect(Math.random() * w, Math.random() * h, 2 + Math.random() * 3, 2 + Math.random() * 3);
+        }
+      }
+      var sideRed = tex(2048, 256, function (g, w, h) {
+        g.fillStyle = "#8E0F35"; g.fillRect(0, 0, w, h);
+        crumbs(g, w, h, 6000, ["rgba(50,0,12,.35)", "rgba(200,50,90,.22)", "rgba(255,255,255,.06)"]);
+      });
+      var ribbon = tex(4096, 128, function (g, w, h) {
+        g.fillStyle = "#FFF1F7"; g.fillRect(0, 0, w, h);
+        g.fillStyle = "#E8B04A"; g.fillRect(0, 0, w, 8); g.fillRect(0, h - 8, w, 8);
         g.textAlign = "center"; g.textBaseline = "middle"; g.direction = "rtl";
         for (var k = 0; k < 4; k++) {
           var cx = (k + 0.5) * w / 4;
-          g.fillStyle = "#FFD9E8"; g.font = "700 " + Math.round(h * 0.56) + "px 'Aref Ruqaa', serif";
-          g.fillText("عيد ميلاد سعيد", cx, h * 0.52);
-          g.fillStyle = "#FFB36B"; g.font = Math.round(h * 0.3) + "px sans-serif";
-          g.fillText("♥", cx - w / 8 + 60, h * 0.52); g.fillText("♥", cx + w / 8 - 60, h * 0.52);
+          g.save(); g.translate(cx + (Math.random() - 0.5) * 40, h * 0.54 + (Math.random() - 0.5) * 8); g.rotate((Math.random() - 0.5) * 0.03);
+          g.fillStyle = "#B3103F"; g.font = "700 " + Math.round(h * (0.62 + Math.random() * 0.08)) + "px 'Aref Ruqaa', serif";
+          g.fillText("عيد ميلاد سعيد", 0, 0); g.restore();
+          g.fillStyle = "#FF3D8B"; g.font = Math.round(h * 0.36) + "px sans-serif";
+          g.fillText("♥", cx - 330, h * 0.52); g.fillText("♥", cx + 330, h * 0.52);
         }
       });
       var sideAge = tex(4096, 352, function (g, w, h) {
-        var gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, "#E0338A"); gr.addColorStop(1, "#A8226F");
+        var gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, "#FF5FA2"); gr.addColorStop(1, "#D2287A");
         g.fillStyle = gr; g.fillRect(0, 0, w, h);
+        crumbs(g, w, h, 9000, ["rgba(255,255,255,.10)", "rgba(120,0,60,.12)"]);
         g.textAlign = "center"; g.textBaseline = "middle";
         for (var k = 0; k < 4; k++) {
-          var cx = (k + 0.5) * w / 4;
-          g.fillStyle = "rgba(255,255,255,.18)"; g.beginPath(); g.arc(cx, h / 2, h * 0.42, 0, Math.PI * 2); g.fill();
-          g.lineWidth = 10; g.strokeStyle = "#7a0f3a"; g.fillStyle = "#FFD27A";
-          g.font = "800 " + Math.round(h * (age ? 0.62 : 0.5)) + "px 'Tajawal', sans-serif";
-          var txt = age || "♥";
-          g.strokeText(txt, cx, h * 0.54); g.fillText(txt, cx, h * 0.54);
-          g.fillStyle = "#FFE9F3"; g.font = Math.round(h * 0.26) + "px sans-serif";
-          g.fillText("♥", cx - w / 8 + 40, h / 2); g.fillText("♥", cx + w / 8 - 40, h / 2);
+          var cx = (k + 0.5) * w / 4 + (Math.random() - 0.5) * 30, cyy = h * 0.66 + (Math.random() - 0.5) * 10;
+          g.fillStyle = "#FFF1F7"; g.beginPath(); g.arc(cx, cyy, h * 0.27, 0, Math.PI * 2); g.fill();
+          g.lineWidth = 6; g.strokeStyle = "#E8B04A"; g.beginPath(); g.arc(cx, cyy, h * 0.27 - 8, 0, Math.PI * 2); g.stroke();
+          g.fillStyle = "#B3103F"; g.font = "800 " + Math.round(h * (age ? 0.3 : 0.24)) + "px 'Tajawal', sans-serif";
+          g.fillText(age || "♥", cx, cyy + h * 0.015);
+          g.fillStyle = "#FFE9F3"; g.font = Math.round(h * 0.16) + "px sans-serif";
+          g.fillText("♥", cx - 190, cyy); g.fillText("♥", cx + 190, cyy);
+        }
+      });
+      var sideRibs = tex(2048, 256, function (g, w, h) {
+        g.fillStyle = "#A263EE"; g.fillRect(0, 0, w, h);
+        for (var x = 0; x < w; x += 24) {
+          var s = g.createLinearGradient(x, 0, x + 24, 0);
+          s.addColorStop(0, "rgba(255,255,255,.22)"); s.addColorStop(0.5, "rgba(255,255,255,0)"); s.addColorStop(1, "rgba(60,0,120,.28)");
+          g.fillStyle = s; g.fillRect(x, 0, 24, h);
         }
       });
 
-      /* One tier: body, frosting, drips, pearls */
-      function tier(R, b, h, sideMat, topColor, frostColor, dripN, dMin, dMax) {
-        var topMat = mat(topColor, 0.6);
-        var body = new T.Mesh(new T.CylinderGeometry(R, R, h, 128), [sideMat, topMat, topMat]);
-        body.position.y = b + h / 2; cake.add(body);
-        var fm = mat(frostColor, 0.3, 0.05);
-        var fr = new T.Mesh(new T.CylinderGeometry(R + 0.05, R + 0.05, 0.16, 128), fm); fr.position.y = b + h; cake.add(fr);
-        for (var i = 0; i < dripN; i++) {
-          var a = i / dripN * Math.PI * 2;
-          var len = dMin + ((i * 37) % 10) / 10 * (dMax - dMin), rr = 0.1 + ((i * 13) % 5) * 0.012;
-          var x = Math.sin(a) * (R + 0.04), z = Math.cos(a) * (R + 0.04);
-          var c = new T.Mesh(new T.CylinderGeometry(rr, rr, len, 14), fm); c.position.set(x, b + h - 0.02 - len / 2, z); cake.add(c);
-          var s = new T.Mesh(new T.SphereGeometry(rr, 14, 10), fm); s.position.set(x, b + h - 0.02 - len, z); cake.add(s);
-        }
-        var pm = mat(0xfff3f8, 0.25, 0.2), pn = Math.floor(Math.PI * 2 * (R + 0.08) / 0.34);
-        for (var j = 0; j < pn; j++) {
-          var pa = j / pn * Math.PI * 2;
-          var p = new T.Mesh(new T.SphereGeometry(0.09, 14, 10), pm);
-          p.position.set(Math.sin(pa) * (R + 0.06), b + 0.09, Math.cos(pa) * (R + 0.06)); cake.add(p);
-        }
-        return b + h + 0.08;
-      }
-      var y1 = tier(2.6, 0.12, 1.2, new T.MeshStandardMaterial({ map: sideBig, roughness: 0.55 }), 0xa50f3f, 0xffd9e8, 30, 0.3, 0.8);
-      var y2 = tier(1.85, y1, 1.0, new T.MeshStandardMaterial({ map: sideAge, roughness: 0.5 }), 0xe0338a, 0xff6fa6, 24, 0.25, 0.65);
-      var y3 = tier(1.1, y2, 0.8, mat(0x9a56e8, 0.5), 0x9a56e8, 0xffd9e8, 16, 0.2, 0.5);
+      function rnd(i, s) { var x = Math.sin(i * 127.1 + s * 311.7) * 43758.5453; return x - Math.floor(x); }
 
-      /* Rosettes, sprinkles, hearts, cherries */
-      var coneGeo = new T.ConeGeometry(0.13, 0.3, 12);
+      /* Frosting skirt: one smooth sheet whose lower edge runs in soft drips */
+      function skirt(R, top, depth, fm, n, seed) {
+        var g = new T.CylinderGeometry(R + 0.05, R + 0.06, 1, 256, 24, true);
+        var ds = [], base = depth * 0.16, i;
+        for (i = 0; i < n; i++) ds.push({ a: (i + (rnd(i, seed) - 0.5) * 0.6) / n * Math.PI * 2, amp: depth * (0.3 + 0.7 * rnd(i + 50, seed)), w: (0.13 + 0.07 * rnd(i + 90, seed)) / R });
+        function L(th) {
+          var v = base;
+          for (var j = 0; j < ds.length; j++) {
+            var dd = Math.abs(Math.atan2(Math.sin(th - ds[j].a), Math.cos(th - ds[j].a)));
+            v += ds[j].amp * Math.exp(-Math.pow(dd / ds[j].w, 2.6));
+          }
+          v += 0.012 * Math.sin(th * 37 + seed) + 0.008 * Math.sin(th * 71 + seed * 2);
+          return Math.max(0.03, Math.min(v, depth * 1.05));
+        }
+        var p = g.attributes.position, nr = g.attributes.normal;
+        for (i = 0; i < p.count; i++) {
+          var x = p.getX(i), y = p.getY(i), z = p.getZ(i), t = 0.5 - y;
+          var l = L(Math.atan2(x, z)), ex = Math.min(1, (l - base) / depth), r = Math.hypot(x, z), k = 1 + 0.05 * ex * t + 0.012 * Math.sin(Math.atan2(x, z) * 19 + seed);
+          p.setXYZ(i, x * k, top - t * l, z * k);
+          var nx = x / r, ny = 0.15 * ex, nz = z / r, nl = Math.hypot(nx, ny, nz);
+          nr.setXYZ(i, nx / nl, ny / nl, nz / nl);
+        }
+        return new T.Mesh(g, fm);
+      }
+
+      /* One tier: body, rounded frosting lip, drips, pearls */
+      function tier(R, b, h, sideMat, topColor, frostColor, drips, depth, seed) {
+        var top = b + h, tm = mat(topColor, 0.6);
+        var tg = new T.Group(); tg.position.set((rnd(1, seed) - 0.5) * 0.07, 0, (rnd(2, seed) - 0.5) * 0.07);
+        tg.rotation.z = (rnd(3, seed) - 0.5) * 0.014; tg.rotation.x = (rnd(4, seed) - 0.5) * 0.014; cake.add(tg);
+        var body = new T.Mesh(new T.CylinderGeometry(R, R, h, 128), [sideMat, tm, tm]);
+        body.position.y = top - h / 2; tg.add(body);
+        var fm = new T.MeshPhysicalMaterial({ color: frostColor, roughness: 0.32, clearcoat: 0.5, clearcoatRoughness: 0.3 });
+        var disc = new T.Mesh(new T.CylinderGeometry(R + 0.03, R + 0.03, 0.14, 128), fm); disc.position.y = top; tg.add(disc);
+        var lip = new T.Mesh(new T.TorusGeometry(R - 0.02, 0.07, 16, 128), fm); lip.rotation.x = Math.PI / 2; lip.position.y = top; tg.add(lip);
+        tg.add(skirt(R, top, depth, fm, drips, seed));
+        var pm = new T.MeshPhysicalMaterial({ color: 0xfff6fa, roughness: 0.2, clearcoat: 0.8 }), pn = Math.floor(Math.PI * 2 * (R + 0.08) / 0.3), pg0 = new T.SphereGeometry(0.09, 16, 12);
+        for (var j = 0; j < pn; j++) {
+          var pa = (j + (rnd(j, seed + 5) - 0.5) * 0.5) / pn * Math.PI * 2, pe = new T.Mesh(pg0, pm);
+          var ps0 = 0.82 + rnd(j + 200, seed) * 0.4, pr = R + 0.06 + (rnd(j + 300, seed) - 0.5) * 0.03;
+          pe.scale.set(ps0, ps0 * (0.9 + rnd(j + 400, seed) * 0.2), ps0);
+          pe.position.set(Math.sin(pa) * pr, b + 0.09 + (rnd(j + 500, seed) - 0.5) * 0.02, Math.cos(pa) * pr); tg.add(pe);
+        }
+        return top + 0.07;
+      }
+
+      var M = function (map, rough) { return new T.MeshStandardMaterial({ map: map, roughness: rough }); };
+      var y1 = tier(2.6, 0.12, 1.2, M(sideRed, 0.75), 0x8e0f35, 0xffe3ee, 30, 0.38, 3);
+      var y2 = tier(1.85, y1, 1.0, M(sideAge, 0.6), 0xff5fa2, 0xff7fb0, 24, 0.3, 7);
+      var y3 = tier(1.1, y2, 0.8, M(sideRibs, 0.5), 0xa263ee, 0xfff0f6, 16, 0.24, 11);
+
+      /* Fondant ribbon carrying the greeting, set below the drips */
+      var rib = new T.Mesh(new T.CylinderGeometry(2.63, 2.63, 0.46, 128, 1, true), M(ribbon, 0.45)); rib.position.y = 0.5; cake.add(rib);
+      var gm = new T.MeshStandardMaterial({ color: 0xe8b04a, roughness: 0.3, metalness: 0.5 });
+      [0.27, 0.73].forEach(function (yy) { var e = new T.Mesh(new T.TorusGeometry(2.63, 0.02, 8, 128), gm); e.rotation.x = Math.PI / 2; e.position.y = yy; cake.add(e); });
+
+      /* Piped rosettes: star-ridged lathe shapes with a soft tip */
+      var pts = [];
+      for (var li = 0; li <= 18; li++) { var lt = li / 18; pts.push(new T.Vector2(Math.max(0.17 * Math.pow(1 - lt, 0.7) * (1 + 0.12 * Math.sin(lt * 9)), 0.002), lt * 0.34)); }
+      var kg = new T.LatheGeometry(pts, 28), kp = kg.attributes.position;
+      for (var ki = 0; ki < kp.count; ki++) {
+        var kx = kp.getX(ki), kz = kp.getZ(ki), ky = kp.getY(ki), kk = 1 + 0.16 * Math.cos(Math.atan2(kz, kx) * 8) * (1 - ky / 0.34);
+        kp.setXYZ(ki, kx * kk, ky, kz * kk);
+      }
+      kg.computeVertexNormals();
       function ring(geo, material, n, r, y) {
         for (var i = 0; i < n; i++) {
-          var a = i / n * Math.PI * 2, m = new T.Mesh(geo, material);
-          m.position.set(Math.sin(a) * r, y, Math.cos(a) * r); cake.add(m);
+          var a = (i + (Math.random() - 0.5) * 0.35) / n * Math.PI * 2, rr = r + (Math.random() - 0.5) * 0.07, sz = 0.85 + Math.random() * 0.3;
+          var m = new T.Mesh(geo, material.clone());
+          m.material.color.offsetHSL((Math.random() - 0.5) * 0.02, (Math.random() - 0.5) * 0.1, (Math.random() - 0.5) * 0.08);
+          m.position.set(Math.sin(a) * rr, y + (Math.random() - 0.5) * 0.03, Math.cos(a) * rr);
+          m.rotation.set((Math.random() - 0.5) * 0.25, i * 0.7 + Math.random(), (Math.random() - 0.5) * 0.25);
+          m.scale.set(sz, sz * (0.9 + Math.random() * 0.25), sz); cake.add(m);
         }
       }
-      ring(coneGeo, mat(0xff3d8b, 0.35), 40, 2.4, y1 + 0.12);
-      ring(coneGeo, mat(0xb66cff, 0.35), 30, 1.65, y2 + 0.12);
-      ring(new T.SphereGeometry(0.15, 20, 14), mat(0xf0143f, 0.2, 0.1), 9, 0.82, y3 + 0.12);
+      ring(kg, new T.MeshPhysicalMaterial({ color: 0xff4f9a, roughness: 0.3, clearcoat: 0.5 }), 34, 2.42, y1 - 0.02);
+      ring(kg, new T.MeshPhysicalMaterial({ color: 0xb87cff, roughness: 0.3, clearcoat: 0.5 }), 26, 1.67, y2 - 0.02);
 
+      /* Cherries with stems on the top tier */
+      var cm = new T.MeshPhysicalMaterial({ color: 0xd10f35, roughness: 0.15, clearcoat: 1, clearcoatRoughness: 0.1 });
+      var stemM = mat(0x3f6b2c, 0.6), cg = new T.SphereGeometry(0.16, 28, 20);
+      var curve = new T.CatmullRomCurve3([new T.Vector3(0, 0.1, 0), new T.Vector3(0.02, 0.26, 0), new T.Vector3(0.1, 0.4, 0.04)]);
+      var stemG = new T.TubeGeometry(curve, 12, 0.012, 6, false);
+      for (var ci2 = 0; ci2 < 8; ci2++) {
+        var ca = ci2 / 8 * Math.PI * 2, ch = new T.Group();
+        ch.add(new T.Mesh(cg, cm)); ch.add(new T.Mesh(stemG, stemM));
+        ca += (Math.random() - 0.5) * 0.2; var cr = 0.8 + (Math.random() - 0.5) * 0.1, cs = 0.85 + Math.random() * 0.35;
+        ch.scale.set(cs, cs, cs); ch.position.set(Math.sin(ca) * cr, y3 + 0.12 + (Math.random() - 0.5) * 0.03, Math.cos(ca) * cr);
+        ch.rotation.set(0, Math.random() * 6, (Math.random() - 0.5) * 0.4); cake.add(ch);
+      }
+
+      /* Glossy hearts on the lower rim */
       var hs = new T.Shape();
       hs.moveTo(0.25, 0.25); hs.bezierCurveTo(0.25, 0.25, 0.2, 0, 0, 0); hs.bezierCurveTo(-0.3, 0, -0.3, 0.35, -0.3, 0.35);
       hs.bezierCurveTo(-0.3, 0.55, -0.1, 0.77, 0.25, 0.95); hs.bezierCurveTo(0.6, 0.77, 0.8, 0.55, 0.8, 0.35);
       hs.bezierCurveTo(0.8, 0.35, 0.8, 0, 0.5, 0); hs.bezierCurveTo(0.35, 0, 0.25, 0.25, 0.25, 0.25);
-      var hg = new T.ExtrudeGeometry(hs, { depth: 0.18, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.05, bevelSegments: 3, curveSegments: 20 });
+      var hg = new T.ExtrudeGeometry(hs, { depth: 0.2, bevelEnabled: true, bevelThickness: 0.08, bevelSize: 0.08, bevelSegments: 6, curveSegments: 28 });
       hg.center();
-      var hm = new T.MeshStandardMaterial({ color: 0xf0143f, roughness: 0.25, metalness: 0.1, emissive: 0x550010 });
+      var hm = new T.MeshPhysicalMaterial({ color: 0xe0123a, roughness: 0.18, clearcoat: 1, clearcoatRoughness: 0.08, emissive: 0x40000c });
       for (var hi = 0; hi < 6; hi++) {
         var ha = hi / 6 * Math.PI * 2 + 0.52, heart = new T.Mesh(hg, hm);
-        heart.scale.set(0.42, 0.42, 0.42);
-        heart.position.set(Math.sin(ha) * 2.12, y1 + 0.32, Math.cos(ha) * 2.12);
-        heart.rotation.y = ha; cake.add(heart);
+        var hsz = 0.36 + Math.random() * 0.09; ha += (Math.random() - 0.5) * 0.25;
+        heart.scale.set(hsz, hsz, hsz); var hr = 2.14 + (Math.random() - 0.5) * 0.1;
+        heart.position.set(Math.sin(ha) * hr, y1 + 0.3 + (Math.random() - 0.5) * 0.05, Math.cos(ha) * hr);
+        heart.rotation.set((Math.random() - 0.5) * 0.15, ha + (Math.random() - 0.5) * 0.25, (Math.random() - 0.5) * 0.3); cake.add(heart);
       }
 
-      var spr = new T.InstancedMesh(new T.BoxGeometry(0.035, 0.035, 0.16), new T.MeshStandardMaterial({ roughness: 0.5 }), 140);
+      /* Sprinkles as small rods */
+      var rodG = new T.CylinderGeometry(0.017, 0.017, 0.14, 6); rodG.rotateZ(Math.PI / 2);
+      var spr = new T.InstancedMesh(rodG, new T.MeshStandardMaterial({ roughness: 0.4 }), 150);
       var mt = new T.Matrix4(), qt = new T.Quaternion(), eu = new T.Euler(), ps = new T.Vector3(), sc = new T.Vector3(1, 1, 1), cl = new T.Color();
       var sp = [0xffd27a, 0xffffff, 0xb66cff, 0xff3d8b, 0x6ee7ff];
-      for (var si = 0; si < 140; si++) {
-        var sa = Math.random() * Math.PI * 2, sr = 1.98 + Math.random() * 0.2;
+      for (var si = 0; si < 150; si++) {
+        var sa = Math.random() * Math.PI * 2, sr = 1.98 + Math.random() * 0.22;
         ps.set(Math.sin(sa) * sr, y1 + 0.03, Math.cos(sa) * sr);
-        eu.set(0, Math.random() * Math.PI, 0); qt.setFromEuler(eu); mt.compose(ps, qt, sc);
+        eu.set((Math.random() - 0.5) * 0.3, Math.random() * Math.PI, 0); qt.setFromEuler(eu); sc.set(0.7 + Math.random() * 0.7, 1, 1); mt.compose(ps, qt, sc);
         spr.setMatrixAt(si, mt); spr.setColorAt(si, cl.set(sp[si % sp.length]));
       }
       spr.instanceColor.needsUpdate = true; cake.add(spr);
 
-      /* Candle with flame */
-      var cy = y3 + 0.45;
-      var candle = new T.Mesh(new T.CylinderGeometry(0.14, 0.14, 0.9, 32), mat(0xfff0f6, 0.4)); candle.position.y = cy; cake.add(candle);
-      for (var ci = 0; ci < 4; ci++) {
-        var st = new T.Mesh(new T.TorusGeometry(0.145, 0.03, 8, 32), mat(0xff3d8b, 0.4));
-        st.rotation.x = Math.PI / 2; st.position.y = cy - 0.34 + ci * 0.22; cake.add(st);
+      /* Number candles on the top tier: her age, in wax */
+      function roundPoly(pts, r) {
+        var sh = new T.Shape(), n = pts.length, i;
+        function toward(p, q, d) { var dx = q[0] - p[0], dy = q[1] - p[1], l = Math.hypot(dx, dy); d = Math.min(d, l / 2); return [p[0] + dx / l * d, p[1] + dy / l * d]; }
+        for (i = 0; i < n; i++) {
+          var p = pts[i], a = toward(p, pts[(i + n - 1) % n], r), b = toward(p, pts[(i + 1) % n], r);
+          if (i === 0) sh.moveTo(a[0], a[1]); else sh.lineTo(a[0], a[1]);
+          sh.quadraticCurveTo(p[0], p[1], b[0], b[1]);
+        }
+        sh.closePath(); return sh;
       }
-      var wick = new T.Mesh(new T.CylinderGeometry(0.015, 0.015, 0.14, 8), mat(0x222222, 0.8)); wick.position.y = cy + 0.5; cake.add(wick);
+      var SEG = { a: [0.04, 1.22, 0.76, 1.5], b: [0.52, 0.76, 0.8, 1.46], c: [0.52, 0.04, 0.8, 0.74], d: [0.04, 0, 0.76, 0.28], e: [0, 0.04, 0.28, 0.74], f: [0, 0.76, 0.28, 1.46], g: [0.04, 0.61, 0.76, 0.89] };
+      var SEVEN = { "0": "abcdef", "2": "abdeg", "3": "abcdg", "4": "bcfg", "5": "acdfg", "6": "acdefg", "8": "abcdefg", "9": "abcdfg" };
+      function digitInfo(ch) {
+        if (ch === "1") return { w: 0.8, wx: 0.46, polys: [[[0.30, 0], [0.62, 0], [0.62, 1.5], [0.42, 1.5], [0, 1.14], [0.18, 0.9], [0.30, 0.98]]] };
+        if (ch === "7") return { w: 0.82, wx: 0.41, polys: [[[0, 1.5], [0.82, 1.5], [0.82, 1.26], [0.60, 0], [0.28, 0], [0.50, 1.2], [0, 1.2]]] };
+        var ps2 = (SEVEN[ch] || SEVEN["8"]).split("").map(function (k) { var s = SEG[k]; return [[s[0], s[1]], [s[2], s[1]], [s[2], s[3]], [s[0], s[3]]]; });
+        return { w: 0.8, wx: 0.4, polys: ps2 };
+      }
       var fTex = radial([[0, "rgba(255,250,220,1)"], [0.25, "rgba(255,200,90,.95)"], [0.6, "rgba(255,110,40,.45)"], [1, "rgba(255,80,30,0)"]], 128);
-      var flame = new T.Sprite(new T.SpriteMaterial({ map: fTex, transparent: true, depthWrite: false, blending: T.AdditiveBlending }));
-      flame.position.y = cy + 0.78; flame.scale.set(0.55, 0.85, 1); cake.add(flame);
-      glow.position.y = cy + 0.8;
+      var digits = age.replace(/\D/g, "").split(""), flames = [];
+      var gap = 0.22, totalW = digits.reduce(function (s, c) { return s + digitInfo(c).w; }, 0) + gap * (digits.length - 1);
+      var holder = new T.Group(); holder.position.y = y3 - 0.02; holder.rotation.y = Math.PI / 4; holder.scale.set(0.8, 0.8, 0.8); cake.add(holder);
+      var xcur = -totalW / 2, waxCols = [0xff4f9a, 0xb87cff];
+      digits.forEach(function (ch, di) {
+        var info = digitInfo(ch);
+        var geo = new T.ExtrudeGeometry(info.polys.map(function (p) { return roundPoly(p, 0.07); }), { depth: 0.26, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.04, bevelSegments: 4, curveSegments: 8 });
+        geo.translate(-info.w / 2, 0, -0.13);
+        var dg = new T.Group();
+        dg.position.x = xcur + info.w / 2; xcur += info.w + gap;
+        dg.rotation.z = (Math.random() - 0.5) * 0.07; dg.rotation.y = (Math.random() - 0.5) * 0.12;
+        var wax = new T.MeshPhysicalMaterial({ color: waxCols[di % 2], roughness: 0.32, clearcoat: 0.5, clearcoatRoughness: 0.25, emissive: 0x2a0518 });
+        dg.add(new T.Mesh(geo, wax));
+        var wx = info.wx - info.w / 2;
+        var wk = new T.Mesh(new T.CylinderGeometry(0.018, 0.018, 0.17, 8), mat(0x222222, 0.8)); wk.position.set(wx, 1.5 + 0.07, 0); dg.add(wk);
+        var fs = new T.Sprite(new T.SpriteMaterial({ map: fTex, transparent: true, depthWrite: false, blending: T.AdditiveBlending }));
+        fs.position.set(wx, 1.5 + 0.46, 0); fs.scale.set(0.62, 0.98, 1); dg.add(fs);
+        flames.push({ sp: fs, x0: wx });
+        holder.add(dg);
+      });
+      glow.position.set(0, y3 + 1.7, 0.5);
 
       var sTex = radial([[0, "rgba(220,200,215,.55)"], [1, "rgba(220,200,215,0)"]], 64);
       var smokes = [];
@@ -508,7 +592,7 @@
       scene.add(sparkles);
 
       /* Drag to turn */
-      var dragging = false, lastX = 0, vel = 0, lit = true, flameK = 1, t0 = performance.now();
+      var dragging = false, lastX = 0, vel = 0, lit = true, flameK = 1, blowK = 0, t0 = performance.now();
       var cv2 = renderer.domElement;
       cv2.addEventListener("pointerdown", function (e) { dragging = true; lastX = e.clientX; try { cv2.setPointerCapture(e.pointerId); } catch (x) {} });
       cv2.addEventListener("pointermove", function (e) { if (!dragging) return; var dx = e.clientX - lastX; lastX = e.clientX; cake.rotation.y += dx * 0.012; vel = dx * 0.0012; });
@@ -520,9 +604,12 @@
         if (!dragging) { cake.rotation.y += (reduce ? 0 : 0.004) + vel; vel *= 0.95; }
         sparkles.rotation.y = t * 0.06;
         flameK += ((lit ? 1 : 0) - flameK) * 0.12;
-        var fk = flameK * (1 + Math.sin(t * 14) * 0.06 + Math.sin(t * 23) * 0.04);
-        flame.scale.set(0.55 * fk, 0.85 * fk, 1); flame.material.opacity = flameK;
-        glow.intensity = 1.3 * flameK * (0.92 + Math.sin(t * 17) * 0.08);
+        flames.forEach(function (f, i) {
+          var fk = flameK * (1 + Math.sin(t * 14 + i * 2) * 0.06 + Math.sin(t * 23 + i) * 0.04) * (1 - 0.45 * blowK);
+          f.sp.scale.set(0.62 * fk, 0.98 * fk, 1); f.sp.material.opacity = flameK * (1 - 0.3 * blowK);
+          f.sp.material.rotation = -blowK * 0.7; f.sp.position.x = f.x0 + blowK * 0.14;
+        });
+        glow.intensity = 1.6 * flameK * (1 - 0.35 * blowK) * (0.92 + Math.sin(t * 17) * 0.08);
         for (var i = smokes.length - 1; i >= 0; i--) {
           var s = smokes[i]; s.life -= 0.012;
           if (s.life <= 0) { cake.remove(s.sp); smokes.splice(i, 1); continue; }
@@ -533,13 +620,17 @@
       }
       requestAnimationFrame(loop);
 
+      api.setBlow = function (k) { blowK = k; };
       api.blow = function () {
         lit = false;
-        for (var i = 0; i < 6; i++) {
-          var sp2 = new T.Sprite(new T.SpriteMaterial({ map: sTex, transparent: true, depthWrite: false, opacity: 1 }));
-          sp2.position.set((Math.random() - 0.5) * 0.1, cy + 0.85 + i * 0.1, 0); sp2.scale.set(0.5, 0.5, 1);
-          cake.add(sp2); smokes.push({ sp: sp2, life: 0.9 - i * 0.08, dx: (Math.random() - 0.5) * 0.004 });
-        }
+        flames.forEach(function (f) {
+          var lp = cake.worldToLocal(f.sp.getWorldPosition(new T.Vector3()));
+          for (var i = 0; i < 5; i++) {
+            var sp2 = new T.Sprite(new T.SpriteMaterial({ map: sTex, transparent: true, depthWrite: false, opacity: 1 }));
+            sp2.position.set(lp.x + (Math.random() - 0.5) * 0.06, lp.y + i * 0.1, lp.z); sp2.scale.set(0.45, 0.45, 1);
+            cake.add(sp2); smokes.push({ sp: sp2, life: 0.9 - i * 0.08, dx: (Math.random() - 0.5) * 0.004 });
+          }
+        });
       };
       api.ok = true;
       return true;
@@ -553,7 +644,7 @@
     var go = function () {
       var ok = false;
       try { ok = Cake3D.init(host); } catch (e) { ok = false; }
-      if (ok) { $("cake2d").hidden = true; $("hint").hidden = false; }
+      if (ok) { $("hint").hidden = false; }
       else { host.hidden = true; }
     };
     var wait = new Promise(function (r) { setTimeout(r, 1500); });
@@ -573,13 +664,56 @@
     $("party").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
     burst(90);
   });
-  $("blow").addEventListener("click", function () {
-    Cake3D.blow();
+  var done = false, micStream = null, micCtx = null;
+  function stopMic() {
+    try { if (micStream) micStream.getTracks().forEach(function (t) { t.stop(); }); if (micCtx) micCtx.close(); } catch (e) {}
+    micStream = null; micCtx = null;
+  }
+  function blowOut() {
+    if (done) return; done = true; stopMic();
+    Cake3D.setBlow(0); Cake3D.blow();
     $("party").classList.add("out");
     burst(180); rain(26);
     setTimeout(function () { burst(120); }, 500);
+  }
+  $("blow").addEventListener("click", blowOut);
+
+  /* Real blowing: a sustained loud, low-frequency rush into the microphone */
+  $("mic").addEventListener("click", function () {
+    var msg = $("micMsg"); msg.hidden = false;
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { msg.textContent = "الميكروفون غير متاح هنا، استعملي الزر الثاني."; return; }
+    msg.textContent = "جاري تشغيل الميكروفون...";
+    navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } }).then(function (stream) {
+      micStream = stream;
+      var AC = window.AudioContext || window.webkitAudioContext; micCtx = new AC();
+      if (micCtx.resume) micCtx.resume();
+      var src = micCtx.createMediaStreamSource(stream), an = micCtx.createAnalyser();
+      an.fftSize = 2048; src.connect(an);
+      var td = new Uint8Array(an.fftSize), fd = new Uint8Array(an.frequencyBinCount);
+      var lowBins = Math.max(2, Math.round(400 / (micCtx.sampleRate / an.fftSize)));
+      var ambient = 0, k = 0, t0 = performance.now(), last = t0;
+      msg.textContent = "تمام، انفخي بقوة على الميكروفون (في أسفل الهاتف).";
+      (function listen() {
+        if (done || !micCtx) return;
+        an.getByteTimeDomainData(td);
+        var sum = 0, i; for (i = 0; i < td.length; i++) { var v = (td[i] - 128) / 128; sum += v * v; }
+        var rms = Math.sqrt(sum / td.length);
+        an.getByteFrequencyData(fd);
+        var lo = 0, hi = 0; for (i = 0; i < fd.length; i++) { if (i < lowBins) lo += fd[i]; else hi += fd[i]; }
+        var rumble = (lo / lowBins) / Math.max(1, hi / (fd.length - lowBins));
+        var now = performance.now(), dt = (now - last) / 1000; last = now;
+        if (now - t0 < 700) { ambient = Math.max(ambient, rms); }
+        else {
+          var thr = Math.max(0.1, ambient * 4);
+          if (rms > thr && rumble > 1.3) k += dt / 0.45; else k -= dt / 0.6;
+          k = Math.min(1, Math.max(0, k)); Cake3D.setBlow(k);
+          if (k >= 1) { blowOut(); return; }
+        }
+        requestAnimationFrame(listen);
+      })();
+    }).catch(function () { msg.textContent = "ما قدرناش نشغلو الميكروفون، استعملي الزر الثاني."; });
   });
   $("again").addEventListener("click", function () { burst(160); rain(22); });
 </script>
-
-</body></html>
+</body>
+</html>
