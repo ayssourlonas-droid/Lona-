@@ -98,6 +98,7 @@
 
   /* Party */
   .party { position: relative; padding-block: 24px 72px; display: flex; flex-direction: column; align-items: center; gap: 28px; text-align: center; }
+  .party[hidden] { display: none !important; }
   .party h2 { font-size: clamp(1.8rem, 7vw, 2.3rem); }
   .hearts { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
   .heart {
@@ -158,7 +159,6 @@
   <section class="hero" id="hero">
     <p class="date">١٦ أكتوبر</p>
     <div class="door">
-      <h1 class="glow-text">عيد ميلاد سعيد لونتي</h1>
       <p class="count-label" id="countLabel">باقي على عيد ميلادك</p>
       <div class="count" id="count" aria-live="off">
         <div><b id="h">00</b><span>ساعة</span></div>
@@ -174,7 +174,7 @@
   <section class="party" id="party" hidden>
     <div class="hearts" id="hearts" aria-hidden="true"></div>
 
-    <h2 class="glow-text">كل عام وإنتي بخير حبيبتي</h2>
+    <h1 class="glow-text" style="font-size:clamp(2rem,9vw,2.6rem)">عيد ميلاد سعيد لونتي</h1>
 
     <div class="stage">
     <div id="cake3d" class="cake3d" role="img" aria-label="كعكة عيد ميلاد ثلاثية الأبعاد عليها شمعتا الرقم 17" hidden></div>
