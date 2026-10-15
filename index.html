@@ -253,7 +253,9 @@
   // Her age, written on the cake. Optional media: a data: URI or a published file path.
   var CONFIG = { age: "17", video: "video.mp4", audio: "" };
   // Midnight of 16 October 2026 in Tunisia (UTC+1).
-  var TARGET = Date.now() + 10000; // TEST: 10 ثواني. رجّعه إلى: new Date("2026-10-16T01:00:00+01:00").getTime();
+  var TARGET = new Date("2026-10-16T01:00:00+01:00").getTime();
+  // If the moment has already passed when the page opens (or is reloaded), replay a short 17-second countdown instead of jumping straight in.
+  if (Date.now() >= TARGET) TARGET = Date.now() + 17000;
 
   var $ = function (id) { return document.getElementById(id); };
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
