@@ -247,6 +247,25 @@
   }
   tick(); setInterval(tick, 1000);
 
+  /* Microphone: asked for as soon as the page opens, kept ready for the candle */
+  var micStream = null, micCtx = null, micPending = null, micDenied = false;
+  function acquireMic() {
+    if (micStream) return Promise.resolve(micStream);
+    if (micPending) return micPending;
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return Promise.reject(new Error("unsupported"));
+    micPending = navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } })
+      .then(function (s) { micStream = s; micPending = null; micDenied = false; return s; })
+      .catch(function (e) { micPending = null; micDenied = true; throw e; });
+    return micPending;
+  }
+  // 1) Ask right when the page loads
+  acquireMic().catch(function () {});
+  // 2) Some phones (iOS Safari) only allow the prompt after a touch: retry on the very first tap
+  function firstTouch() {
+    if (!micStream && !micPending) acquireMic().catch(function () {});
+  }
+  document.addEventListener("pointerdown", firstTouch, { once: true });
+
   /* Confetti */
   var cv = $("fx"), ctx = cv.getContext("2d"), parts = [], raf = 0;
   function size() { cv.width = window.innerWidth * devicePixelRatio; cv.height = window.innerHeight * devicePixelRatio; }
@@ -659,15 +678,17 @@
 
   /* Flow */
   $("enter").addEventListener("click", function () {
+    // If the permission was missed or blocked at load, ask again now (a tap is a valid gesture)
+    if (!micStream && !micPending) acquireMic().catch(function () {});
     $("party").hidden = false;
     showCake();
     $("party").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
     burst(90);
   });
-  var done = false, micStream = null, micCtx = null;
+  var done = false, listening = false;
   function stopMic() {
     try { if (micStream) micStream.getTracks().forEach(function (t) { t.stop(); }); if (micCtx) micCtx.close(); } catch (e) {}
-    micStream = null; micCtx = null;
+    micStream = null; micCtx = null; listening = false;
   }
   function blowOut() {
     if (done) return; done = true; stopMic();
@@ -679,39 +700,46 @@
   $("blow").addEventListener("click", blowOut);
 
   /* Real blowing: a sustained loud, low-frequency rush into the microphone */
+  function startListening(stream) {
+    if (listening || done) return;
+    listening = true;
+    var msg = $("micMsg");
+    var AC = window.AudioContext || window.webkitAudioContext; micCtx = new AC();
+    if (micCtx.resume) micCtx.resume();
+    var src = micCtx.createMediaStreamSource(stream), an = micCtx.createAnalyser();
+    an.fftSize = 2048; src.connect(an);
+    var td = new Uint8Array(an.fftSize), fd = new Uint8Array(an.frequencyBinCount);
+    var lowBins = Math.max(2, Math.round(400 / (micCtx.sampleRate / an.fftSize)));
+    var ambient = 0, k = 0, t0 = performance.now(), last = t0;
+    msg.hidden = false;
+    msg.textContent = "تمام، انفخي بقوة على الميكروفون (في أسفل الهاتف).";
+    (function listen() {
+      if (done || !micCtx) return;
+      an.getByteTimeDomainData(td);
+      var sum = 0, i; for (i = 0; i < td.length; i++) { var v = (td[i] - 128) / 128; sum += v * v; }
+      var rms = Math.sqrt(sum / td.length);
+      an.getByteFrequencyData(fd);
+      var lo = 0, hi = 0; for (i = 0; i < fd.length; i++) { if (i < lowBins) lo += fd[i]; else hi += fd[i]; }
+      var rumble = (lo / lowBins) / Math.max(1, hi / (fd.length - lowBins));
+      var now = performance.now(), dt = (now - last) / 1000; last = now;
+      if (now - t0 < 700) { ambient = Math.max(ambient, rms); }
+      else {
+        var thr = Math.max(0.1, ambient * 4);
+        if (rms > thr && rumble > 1.3) k += dt / 0.45; else k -= dt / 0.6;
+        k = Math.min(1, Math.max(0, k)); Cake3D.setBlow(k);
+        if (k >= 1) { blowOut(); return; }
+      }
+      requestAnimationFrame(listen);
+    })();
+  }
+
   $("mic").addEventListener("click", function () {
     var msg = $("micMsg"); msg.hidden = false;
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { msg.textContent = "الميكروفون غير متاح هنا، استعملي الزر الثاني."; return; }
-    msg.textContent = "جاري تشغيل الميكروفون...";
-    navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } }).then(function (stream) {
-      micStream = stream;
-      var AC = window.AudioContext || window.webkitAudioContext; micCtx = new AC();
-      if (micCtx.resume) micCtx.resume();
-      var src = micCtx.createMediaStreamSource(stream), an = micCtx.createAnalyser();
-      an.fftSize = 2048; src.connect(an);
-      var td = new Uint8Array(an.fftSize), fd = new Uint8Array(an.frequencyBinCount);
-      var lowBins = Math.max(2, Math.round(400 / (micCtx.sampleRate / an.fftSize)));
-      var ambient = 0, k = 0, t0 = performance.now(), last = t0;
-      msg.textContent = "تمام، انفخي بقوة على الميكروفون (في أسفل الهاتف).";
-      (function listen() {
-        if (done || !micCtx) return;
-        an.getByteTimeDomainData(td);
-        var sum = 0, i; for (i = 0; i < td.length; i++) { var v = (td[i] - 128) / 128; sum += v * v; }
-        var rms = Math.sqrt(sum / td.length);
-        an.getByteFrequencyData(fd);
-        var lo = 0, hi = 0; for (i = 0; i < fd.length; i++) { if (i < lowBins) lo += fd[i]; else hi += fd[i]; }
-        var rumble = (lo / lowBins) / Math.max(1, hi / (fd.length - lowBins));
-        var now = performance.now(), dt = (now - last) / 1000; last = now;
-        if (now - t0 < 700) { ambient = Math.max(ambient, rms); }
-        else {
-          var thr = Math.max(0.1, ambient * 4);
-          if (rms > thr && rumble > 1.3) k += dt / 0.45; else k -= dt / 0.6;
-          k = Math.min(1, Math.max(0, k)); Cake3D.setBlow(k);
-          if (k >= 1) { blowOut(); return; }
-        }
-        requestAnimationFrame(listen);
-      })();
-    }).catch(function () { msg.textContent = "ما قدرناش نشغلو الميكروفون، استعملي الزر الثاني."; });
+    if (!micStream) msg.textContent = "جاري تشغيل الميكروفون...";
+    acquireMic().then(startListening).catch(function () {
+      msg.textContent = "ما قدرناش نشغلو الميكروفون، فعّليه من إعدادات المتصفح أو استعملي الزر الثاني.";
+    });
   });
   $("again").addEventListener("click", function () { burst(160); rain(22); });
 </script>
