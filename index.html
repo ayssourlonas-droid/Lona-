@@ -79,8 +79,19 @@
   .count b { display: block; font-size: 1.7rem; line-height: 1.1; color: var(--pink); font-family: var(--body); }
   .count span { font-size: 0.7rem; color: var(--muted); }
   .count[hidden] { display: none !important; }
+  .count div { transition: max-width .6s ease, opacity .6s ease, padding .6s ease, margin .6s ease, border-width .6s ease; max-width: 80px; overflow: hidden; }
+  /* A leading unit that has reached 00 folds away */
+  .count div.gone { max-width: 0; min-width: 0; opacity: 0; padding-inline: 0; margin-inline: -5px; border-width: 0; }
+  /* Under a minute: the seconds box beats like a heart */
+  .count div.pulse { animation: pulse 1s ease-in-out infinite; border-color: var(--pink); box-shadow: 0 0 16px color-mix(in srgb, var(--red) 55%, transparent); }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 20% { transform: scale(1.14); } 40% { transform: scale(1); } 55% { transform: scale(1.08); } }
+  /* Last 10 seconds: one big colored number */
+  .big { direction: ltr; font: 800 5rem/1.1 var(--body); color: var(--bc, var(--pink)); text-shadow: 0 0 22px var(--bc, var(--pink)), 0 0 56px color-mix(in srgb, var(--bc, var(--pink)) 55%, transparent); }
+  .big[hidden] { display: none !important; }
+  .big.pop { animation: pop .9s cubic-bezier(.2,.9,.3,1.2) both; }
+  @keyframes pop { from { transform: scale(1.7); opacity: 0; } 35% { opacity: 1; } to { transform: scale(1); opacity: 1; } }
   .today { font-family: var(--display); font-size: 1.5rem; color: var(--pink); }
-  .lead { color: var(--muted); max-width: 30ch; }
+  .sub { font-family: var(--display); font-size: 1.3rem; line-height: 1.8; color: var(--fg); max-width: 22ch; }
 
   .btn {
     appearance: none; border: 0; cursor: pointer;
@@ -140,14 +151,38 @@
   .media audio { width: 100%; }
   .media[hidden] { display: none !important; }
   .media h3 { font-family: var(--display); font-size: 1.4rem; color: var(--violet); margin: 0; }
+  /* The video appears only after the candle is blown out */
+  .party:not(.out) .media { display: none; }
+  .out .media { animation: fade .8s ease .4s both; }
+  .media video { max-width: 360px; }
 
   .fall { position: fixed; top: -30px; z-index: 19; pointer-events: none; font-size: var(--sz); color: var(--c); animation: fall var(--d) linear forwards; }
   @keyframes fall { to { transform: translateY(110vh) translateX(var(--sway)) rotate(var(--rot)); } }
 
+  .balloon {
+    position: fixed; bottom: -140px; z-index: 18; pointer-events: none;
+    width: var(--w); height: calc(var(--w) * 1.25); background: var(--c);
+    border-radius: 50% 50% 50% 50% / 58% 58% 42% 42%;
+    box-shadow: inset -8px -10px 18px rgb(0 0 0 / .22), inset 8px 8px 14px rgb(255 255 255 / .28);
+    animation: float var(--d) cubic-bezier(.3,.1,.4,1) forwards; animation-delay: var(--delay);
+  }
+  .balloon::before { /* knot */
+    content: ""; position: absolute; left: 50%; bottom: -6px; width: 10px; height: 10px; background: var(--c);
+    transform: translateX(-50%) rotate(45deg); border-radius: 2px;
+  }
+  .balloon::after { /* string */
+    content: ""; position: absolute; left: 50%; top: 100%; width: 1.5px; height: 70px; margin-top: 4px;
+    background: linear-gradient(var(--muted), transparent);
+  }
+  @keyframes float {
+    0% { transform: translate(0, 0) rotate(-4deg); }
+    50% { transform: translate(var(--sway), -65vh) rotate(5deg); }
+    100% { transform: translate(calc(var(--sway) * -0.6), -135vh) rotate(-3deg); }
+  }
   canvas#fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; }
 
   @media (prefers-reduced-motion: reduce) {
-    .heart, .out .wish, .beat { animation: none; }
+    .heart, .out .wish, .beat, .count div.pulse, .big.pop { animation: none; }
     .btn { transition: none; }
   }
 </style>
@@ -159,16 +194,15 @@
   <section class="hero" id="hero">
     <p class="date">١٦ أكتوبر</p>
     <div class="door">
-      <p class="count-label" id="countLabel">باقي على عيد ميلادك</p>
       <div class="count" id="count" aria-live="off">
-        <div><b id="h">00</b><span>ساعة</span></div>
-        <div><b id="m">00</b><span>دقيقة</span></div>
-        <div><b id="s">00</b><span>ثانية</span></div>
+        <div id="boxH"><b id="h">00</b><span>ساعة</span></div>
+        <div id="boxM"><b id="m">00</b><span>دقيقة</span></div>
+        <div id="boxS"><b id="s">00</b><span>ثانية</span></div>
       </div>
+      <div class="big" id="big" hidden aria-hidden="true"></div>
       <p class="today" id="today" hidden>اليوم عيد ميلادك</p>
+      <p class="sub" id="sub" hidden>حضرتلك مفاجأة صغيرة من بعيد، خاطر قلبي حذاك.</p>
     </div>
-    <p class="lead">حضرتلك مفاجأة صغيرة من بعيد، خاطر قلبي حذاك.</p>
-    <button class="btn" id="enter" type="button">ادخلي للحفلة</button>
   </section>
 
   <section class="party" id="party" hidden>
@@ -194,13 +228,10 @@
         <p>عيدك هو عيدي، وهالعيد ما يكملش من غيرك.</p>
       </div>
 
-      <p class="reasons-title">علاش نحبك</p>
-      <ul class="reasons">
-        <li>تبسيمتك، كي تبسمي نحس روحي قدام حورية نازلة من الجنة.</li>
-        <li>نهار سمعتي كلمتي وبقيتي حذايا، كل ما نتفكرها نبتسم.</li>
-        <li>إنتي أحلى صدفة جمعها القدر.</li>
-        <li>خاطر إنتي ولّيتي جزء من حياتي.</li>
-      </ul>
+      <div class="media" id="videoBox" hidden>
+        <h3>فيديو ليك وحدك</h3>
+        <video id="video" controls playsinline preload="metadata"></video>
+      </div>
 
       <svg class="beat" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.8 8.3 3 5 6.2 5c2 0 3.5 1.1 4.3 2.5h3C14.3 6.1 15.800 5 17.800 5 21 5 23.200 8.300 21.600 11.800 19.500 16.400 12 21 12 21z" fill="var(--red)"/></svg>
 
@@ -213,10 +244,6 @@
       <h3>رسالة بصوتي</h3>
       <audio id="audio" controls preload="none"></audio>
     </div>
-    <div class="media" id="videoBox" hidden>
-      <h3>فيديو ليك وحدك</h3>
-      <video id="video" controls playsinline preload="metadata"></video>
-    </div>
   </section>
 </main>
 <canvas id="fx" aria-hidden="true"></canvas>
@@ -224,27 +251,72 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
   // Her age, written on the cake. Optional media: a data: URI or a published file path.
-  var CONFIG = { age: "17", video: "", audio: "" };
+  var CONFIG = { age: "17", video: "video.mp4", audio: "" };
   // Midnight of 16 October 2026 in Tunisia (UTC+1).
-  var TARGET = new Date("2026-10-16T00:00:00+01:00").getTime();
+  var TARGET = Date.now() + 10000; // TEST: 10 ثواني. رجّعه إلى: new Date("2026-10-16T01:00:00+01:00").getTime();
 
   var $ = function (id) { return document.getElementById(id); };
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var COLS = ["var(--red)", "var(--pink)", "var(--violet)"];
 
   function pad(n) { return String(n).padStart(2, "0"); }
+
+  /* Balloons floating up the screen */
+  function balloons(n) {
+    if (reduce) return;
+    var cols = ["#F0143F", "#FF3D8B", "#B66CFF", "#FFB36B", "#6EE7FF", "#FF6B6B"];
+    for (var i = 0; i < n; i++) {
+      var b = document.createElement("span");
+      b.className = "balloon";
+      b.style.left = (2 + Math.random() * 92) + "%";
+      b.style.setProperty("--c", cols[i % cols.length]);
+      b.style.setProperty("--w", (38 + Math.random() * 30) + "px");
+      b.style.setProperty("--d", (6 + Math.random() * 5) + "s");
+      b.style.setProperty("--delay", (Math.random() * 1.8) + "s");
+      b.style.setProperty("--sway", ((Math.random() - 0.5) * 120) + "px");
+      document.body.appendChild(b);
+      setTimeout((function (el) { return function () { el.remove(); }; })(b), 14000);
+    }
+  }
+  /* The big moment when the countdown reaches zero */
+  function celebrate() {
+    burst(220); rain(30); balloons(22);
+    setTimeout(function () { burst(160); }, 450);
+    setTimeout(function () { burst(160); rain(18); }, 1000);
+    setTimeout(function () { burst(120); }, 1700);
+  }
+  var BIGCOLS = ["#F0143F", "#FF3D8B", "#B66CFF", "#FFB36B", "#6EE7FF"], lastBig = -1, autoScheduled = false;
   function tick() {
     var left = TARGET - Date.now();
     if (left <= 0) {
-      $("count").hidden = true; $("countLabel").hidden = true; $("today").hidden = false;
+      $("count").hidden = true; $("big").hidden = true;
+      $("today").hidden = false; $("sub").hidden = false;
+      // The party opens by itself a few seconds after the message appears
+      if (!autoScheduled) { autoScheduled = true; setTimeout(celebrate, 60); setTimeout(enterParty, 5000); }
       return;
     }
-    var t = Math.floor(left / 1000);
-    $("h").textContent = pad(Math.floor(t / 3600));
-    $("m").textContent = pad(Math.floor((t % 3600) / 60));
-    $("s").textContent = pad(t % 60);
+    var t = Math.ceil(left / 1000);
+    var hh = Math.floor(t / 3600), mm = Math.floor((t % 3600) / 60), ss = t % 60;
+    if (t <= 10) { // last 10 seconds: big colored digits
+      $("count").hidden = true; $("big").hidden = false;
+      if (lastBig !== t) {
+        lastBig = t;
+        var b = $("big");
+        b.textContent = t;
+        b.style.setProperty("--bc", BIGCOLS[t % BIGCOLS.length]);
+        b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop");
+      }
+      return;
+    }
+    $("count").hidden = false; $("big").hidden = true;
+    $("h").textContent = pad(hh);
+    $("m").textContent = pad(mm);
+    $("s").textContent = pad(ss);
+    $("boxH").classList.toggle("gone", hh === 0);
+    $("boxM").classList.toggle("gone", hh === 0 && mm === 0);
+    $("boxS").classList.toggle("pulse", t < 60);
   }
-  tick(); setInterval(tick, 1000);
+  tick(); setInterval(tick, 250);
 
   /* Microphone: asked for as soon as the page opens, kept ready for the candle */
   var micStream = null, micCtx = null, micPending = null, micDenied = false;
@@ -676,15 +748,16 @@
   if (CONFIG.audio) { $("audio").src = CONFIG.audio; $("audioBox").hidden = false; }
 
   /* Flow */
-  $("enter").addEventListener("click", function () {
-    // If the permission was missed or blocked at load, ask again now (a tap is a valid gesture)
+  var entered = false;
+  function enterParty() {
+    if (entered) return; entered = true;
     if (!micStream && !micPending) acquireMic().catch(function () {});
     $("party").hidden = false;
     showCake();
     $("party").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
     burst(90);
     beginBlowing();
-  });
+  }
   var done = false, listening = false;
   function stopMic() {
     try { if (micStream) micStream.getTracks().forEach(function (t) { t.stop(); }); if (micCtx) micCtx.close(); } catch (e) {}
@@ -706,6 +779,8 @@
     var msg = $("micMsg");
     var AC = window.AudioContext || window.webkitAudioContext; micCtx = new AC();
     if (micCtx.resume) micCtx.resume();
+    // Without a tap the browser may keep audio suspended: wake it on the first touch
+    document.addEventListener("pointerdown", function () { if (micCtx && micCtx.state === "suspended") micCtx.resume(); }, { once: true });
     var src = micCtx.createMediaStreamSource(stream), an = micCtx.createAnalyser();
     an.fftSize = 2048; src.connect(an);
     var td = new Uint8Array(an.fftSize), fd = new Uint8Array(an.frequencyBinCount);
