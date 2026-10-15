@@ -183,9 +183,8 @@
 
     <div class="ask" id="ask">
       <p>انفخي على الشمعة وتمنّي أمنية في قلبك.</p>
-      <button class="btn" id="mic" type="button">انفخي على الشمعة</button>
-      <p class="hint" id="micMsg" hidden></p>
-      <button class="btn alt" id="blow" type="button">أو اضغطي لتطفئيها</button>
+      <p class="hint" id="micMsg">جاري تشغيل الميكروفون...</p>
+      <button class="btn alt" id="blow" type="button" hidden>اضغطي لتطفئيها</button>
     </div>
 
     <div class="wish" id="wish">
@@ -684,6 +683,7 @@
     showCake();
     $("party").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
     burst(90);
+    beginBlowing();
   });
   var done = false, listening = false;
   function stopMic() {
@@ -733,14 +733,15 @@
     })();
   }
 
-  $("mic").addEventListener("click", function () {
-    var msg = $("micMsg"); msg.hidden = false;
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { msg.textContent = "الميكروفون غير متاح هنا، استعملي الزر الثاني."; return; }
-    if (!micStream) msg.textContent = "جاري تشغيل الميكروفون...";
-    acquireMic().then(startListening).catch(function () {
-      msg.textContent = "ما قدرناش نشغلو الميكروفون، فعّليه من إعدادات المتصفح أو استعملي الزر الثاني.";
-    });
-  });
+  // Listen for the blow automatically; the button appears only if the microphone fails
+  function showFallback() {
+    if (done) return;
+    $("micMsg").textContent = "ما قدرناش نشغلو الميكروفون، اضغطي على الزر لتطفئي الشمعة.";
+    $("blow").hidden = false;
+  }
+  function beginBlowing() {
+    acquireMic().then(startListening).catch(showFallback);
+  }
   $("again").addEventListener("click", function () { burst(160); rain(22); });
 </script>
 </body>
